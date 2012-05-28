@@ -9,13 +9,12 @@
 
 // INCLUDES ///////////////////////////////////////////////////////////////////////////////////////
 
+#include "lib_tom_cpp/vector.h"
 #include "universe.h"
-
-#include <TomsLibrary/vector.h>
 
 #include <GL/glut.h>
 
-#include <iostream.h>
+#include <iostream>
 
 // GLOBAL VARIABLE DEFINITIONS ////////////////////////////////////////////////////////////////////
 
@@ -46,7 +45,7 @@ namespace
 /*
  *
  */
-void main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
    using namespace bigBang;
 
@@ -67,6 +66,8 @@ void main(int argc, char *argv[])
    U.init();
 
    glutMainLoop();
+
+   return 0;
 }
 
 // FILE SCOPE FUNCTION DEFINITIONS ////////////////////////////////////////////////////////////////

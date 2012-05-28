@@ -1,0 +1,3 @@
+[submodule "lib_tom_cpp"]
+	path = lib_tom_cpp
+	url = git@github.com:tomcdonnell/lib_tom_cpp

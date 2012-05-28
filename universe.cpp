@@ -38,7 +38,7 @@ namespace bigBang
   */
  void universe::init(void)
  {
-    int i, j;
+    unsigned int i, j;
     bool placed;
 
     //srand((unsigned)time(NULL));
@@ -87,7 +87,7 @@ namespace bigBang
     glMatrixMode(GL_MODELVIEW);
 
     //glBegin(GL_POINTS);
-      for (int i = 0; i < nParticles; ++i)
+      for (unsigned int i = 0; i < nParticles; ++i)
       {
          //glVertex3f(pArrayOld[i].pos.x, pArrayOld[i].pos.y, 0.0);
          glPushMatrix();
@@ -103,6 +103,9 @@ namespace bigBang
   */
  void universe::simulate(double timeStep)
  {
+    using std::cout;
+    using std::endl;
+
     moveParticles(timeStep);
     bounceParticles();     // (particles may have travelled off screen)
 
@@ -158,11 +161,11 @@ namespace bigBang
   */
  double universe::findTimeSince1stCollision(int &p1No, int &p2No)
  {
-    bool collisionOccurred = false;
+    bool   collisionOccurred = false;
+    double longestTime       = 0.0, t;
 
-    double longestTime = 0.0, t;
-    for (int i = 0; i < pVectorNew.size(); ++i)
-      for (int j = 0; j < pVectorNew.size(); ++j)
+    for (unsigned int i = 0; i < pVectorNew.size(); ++i)
+      for (unsigned int j = 0; j < pVectorNew.size(); ++j)
         if (i != j && detectParticleOverlap(pVectorNew[i], pVectorNew[j]))
           if ((t = findTimeSinceCollision(i, j)) > longestTime)
           {
@@ -183,6 +186,9 @@ namespace bigBang
   */
  double universe::findTimeSinceCollision(const int &p1No, const int &p2No)
  {
+    using std::cout;
+    using std::endl;
+
     particle &p1 = pVectorNew[p1No];
     particle &p2 = pVectorNew[p2No];
 
@@ -227,6 +233,9 @@ namespace bigBang
   */
  void universe::collideParticles(particle &p1, particle &p2)
  {
+    using std::cout;
+    using std::endl;
+
     assert(   1.99 * particleRadius < distance(p1.pos, p2.pos)
            &&                         distance(p1.pos, p2.pos) < 2.01 * particleRadius);
 

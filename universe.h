@@ -11,7 +11,7 @@
 
 // INCLUDES ///////////////////////////////////////////////////////////////////////////////////////
 
-#include <TomsLibrary/vector.h>
+#include "lib_tom_cpp/vector.h"
 
 #include <fstream>
 #include <vector>
@@ -43,7 +43,7 @@ namespace bigBang
     universe(const double _G              =  1.0e3, const int    _nParticles     = 10 ,
              const double _particleRadius = 50.0  , const double _particleMass   = 1.0, 
              const double _maxInitialV    =  4.0  , const double _reboundCoeff   = 1.0 )
-    : G(_G)                          , nParticles(_nParticles)    ,
+    : nParticles(_nParticles)        , G(_G)                      ,
       particleRadius(_particleRadius), particleMass(_particleMass),
       maxInitialV(_maxInitialV)      , reboundCoeff(_reboundCoeff)
     {}
@@ -70,6 +70,8 @@ namespace bigBang
 
     void collideParticles(particle &, particle &);
 
+    const unsigned int nParticles;
+
     const double G,              // (Nm^2 / kg^2) universal gravitational constant.
                                  //   Chosen arbitrarily, but for consistent velocities,
                                  //   needs to be inv-proportional to nParticles
@@ -78,8 +80,6 @@ namespace bigBang
                  particleMass,   // (kg)
                  maxInitialV,    // (m/s)
                  reboundCoeff;   // ratio: (post-collision energy) / (pre-collision energy)
-
-    const int nParticles;
 
     std::vector<particle> pVectorOld, // old array is always in consistent state (ie. no overlap).
                           pVectorNew; // new array is used during simulation to ensure that all
@@ -126,16 +126,16 @@ namespace bigBang
     //assert(timeStep >= 0.0);
     if (timeStep < 0.0)
     {
-       cout << "in moveParticles(), timeStep = " << timeStep << endl;
+       std::cout << "in moveParticles(), timeStep = " << timeStep << std::endl;
        exit(1);
     }
 
-    for (int i = 0; i < nParticles; ++i)
+    for (unsigned int i = 0; i < nParticles; ++i)
     {
        rec2vector acc = rec2vector(0, 0);
 
        // sum accelerations of particle i due to particles j
-       for (int j = 0; j < pVectorOld.size(); ++j)
+       for (unsigned int j = 0; j < pVectorOld.size(); ++j)
          if (i != j)
            acc += convToRec(gravForce(pVectorOld[i], pVectorOld[j]) / particleMass);
 
@@ -152,7 +152,7 @@ namespace bigBang
  {
     assert(timeStep <= 0.0);
 
-    for (int i = 0; i < nParticles; ++i)
+    for (unsigned int i = 0; i < nParticles; ++i)
       pVectorNew[i].pos = pVectorNew[i].pos + pVectorNew[i].vel * timeStep;
  }
 
@@ -165,7 +165,7 @@ namespace bigBang
   */
  inline void universe::bounceParticles(void)
  {
-    for (int i = 0; i < nParticles; ++i)
+    for (unsigned int i = 0; i < nParticles; ++i)
     {
        const double &r = particleRadius;
        rec2vector   &p = pVectorNew[i].pos,
@@ -189,7 +189,7 @@ namespace bigBang
   */
  inline void universe::wrapParticles(void)
  {
-    for (int i = 0; i < nParticles; ++i)
+    for (unsigned int i = 0; i < nParticles; ++i)
     {
        rec2vector   &p = pVectorNew[i].pos;
 
